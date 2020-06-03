@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="display-3 text-danger text-center font-weight-bold"> College List </div>
+
+<div class="h3 text-primary  font-weight-bold mt-5 ml-3"><span class="text-success">Welcome !</span>
+  {{request.user.first_name}} {{request.user.last_name}} </div>
+
+<div class="row mt-3 ml-2">
+  <input type="text" class="form-control col-md-6" id="search" name="searchValue">
+  <button type="button" class="btn btn-success col-md-1 ml-1">Search</button>
+  <button type="button" class="btn btn-primary col-md-2 ml-5" id="addCollegeDetails" data-toggle="modal" data-target="#collegeFormModal">+ Add
+    New College Details</button>
+</div>
+
+
+
+
+
+<!--College Form Modal -->
+<div class="modal fade" id="collegeFormModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-bold text-primary h3" id="exampleModalLabel">Add New College Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="collegeDetails" id="collegeForm">
+
+          {% csrf_token %}
+
+          <div class="form-group">
+            <label for="college_name" class="font-weight-bold">College Name</label>
+            <input type="text" class="form-control" id="college_name" name="college_name">
+          </div>
+
+          <div class="form-group">
+            <label for="college_address" class="font-weight-bold">College Address</label>
+            <input type="text" class="form-control" id="college_address" name="college_address">
+          </div>
+
+          <div class="form-group">
+            <label for="college_phone" class="font-weight-bold">College Phone No.</label>
+            <input type="text" class="form-control" id="college_phone" name="college_phone">
+          </div>
+
+          <div class="form-group">
+            <label for="college_description" class="font-weight-bold">College Description</label>
+            <input type="text" class="form-control" id="college_description" name="college_description">
+          </div>
+
+
+      </div>
+
+      <input type="hidden" value="{{colleges.number}}" name="current_page">
+      <input type="hidden" value="" id="collegeId" name="collegeId">
+      
+
+      <div class="modal-footer">
+        <button type="reset" class="btn btn-danger col-md-3">Reset</button>
+        <button type="submit" class="btn btn-success col-md-3" id="submitButton">Add</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<table class="container-fluid table table-striped mt-3">
+  <tr>
+    <th>Sr no.</th>
+    <th>College Name</th>
+    <th>College Address</th>
+    <th>College Description</th>
+    <th>College Phone</th>
+    <th>Action</th>
+  </tr>
+
+  {% if colleges %}
+
+  {% for college in colleges %}
+
+  <tr>
+    <td>{{forloop.counter}}</td>
+    <td>{{college.college_name}}</td>
+    <td>{{college.college_address}}</td>
+    <td>{{college.college_description}}</td>
+    <td>{{college.college_phone}}</td>
+    <td>
+      <button type="button" class="btn btn-primary btn-small">staff</button>
+      <button type="button" class="btn btn-success btn-small" value="{{college.id}}" data-toggle="modal" data-target="#collegeFormModal" onclick="fetchCollege(this.value)">Edit</button>
+      <button type="button" value="{{college.id}}" onclick="deleteCollege(this.value)"
+        class="btn btn-danger btn-small" data-toggle="modal" data-target="#deleteModal">Delete</button>
+    </td>
+  </tr>
+
+  {% endfor %}
+  {% else %}
+  <tr>
+    <td>
+      <h2 class="text-danger mt-5">Sorry ! No data available</h2>
+    </td>
+  </tr>
+  {% endif %}
+
+</table>
+
+
+<!-- pagination-->
+
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    {% if colleges.number == total_pages and colleges.has_previous and colleges.number > 2 %}
+    <li class="page-item">
+      <a class="page-link active" href="?page={{colleges.previous_page_number}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link"
+        href="?page={{colleges.number|add:"-2"}}">{{colleges.number|add:"-2"}}</a></li>
+    <li class="page-item"><a class="page-link"
+        href="?page={{colleges.number|add:"-1"}}">{{colleges.number|add:"-1"}}</a></li>
+
+
+    {% elif colleges.has_previous %}
+    <li class="page-item">
+      <a class="page-link active" href="?page={{colleges.previous_page_number}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+
+    <li class="page-item"><a class="page-link"
+        href="?page={{colleges.number|add:"-1"}}">{{colleges.number|add:"-1"}}</a></li>
+    {% else %}
+
+    <li class="page-item">
+      <a class="page-link" href="?page=" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+
+    {% endif %}
+
+    {% if colleges.number >= 1 %}
+
+    <li class="page-item active"><a class="page-link" href="?page={{colleges.number}}">{{colleges.number}}</a></li>
+
+    {% endif %}
+
+
+    {% if colleges.number == 1 and colleges.has_next and total_pages >= 3 %}
+    <li class="page-item"><a class="page-link" href="?page={{colleges.number|add:"1"}}">{{colleges.number|add:"1"}}</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="?page={{colleges.number|add:"2"}}">{{colleges.number|add:"2"}}</a>
+    </li>
+
+    <li class="page-item">
+      <a class="page-link" href="?page={{colleges.next_page_number}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+
+    {% elif colleges.has_next %}
+
+    <li class="page-item"><a class="page-link" href="?page={{colleges.number|add:"1"}}">{{colleges.number|add:"1"}}</a>
+    </li>
+
+    <li class="page-item">
+      <a class="page-link" href="?page={{colleges.next_page_number}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+
+    {% else %}
+
+    <li class="page-item">
+      <a class="page-link" href="" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+
+    {% endif %}
+
+  </ul>
+</nav>
+
+<!--delete Modal-->
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="delete" method="post">
+          {% csrf_token %}
+          <div class="text-danger font-weight-bold">Are you sure ?</div>
+         
+          <input type="hidden" value="" id="deleteCollegeId" name="deleteid">
+          <input type="hidden" value="{{colleges.number}}" name="currentPage">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger text-white">Delete</a>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!--<button type="button" name="" id="special" class="btn btn-primary btn-lg btn-block">Test Button</button>
+
+<p id="goa">Hello</p>-->
+
+
+{% endblock content %}
