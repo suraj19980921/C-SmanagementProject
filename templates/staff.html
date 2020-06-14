@@ -1,0 +1,235 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+
+<div class="display-3 text-danger text-center font-weight-bold"> staff List </div>
+
+<div class="h3 text-primary  font-weight-bold mt-5 ml-3"><span class="text-success">Welcome !</span>
+  {{request.user.first_name}} {{request.user.last_name}} </div>
+
+<div class="row mt-3 ml-2">
+  <input type="text" class="form-control col-md-6" id="search" name="searchValue">
+  <button type="button" class="btn btn-success col-md-1 ml-1">Search</button>
+  <button type="button" class="btn btn-primary col-md-2 ml-5" id="addstaffDetails" data-toggle="modal" data-target="#staffFormModal">+ Add
+    New staff Details</button>
+</div>
+
+
+
+
+
+<!--staff Form Modal -->
+<div class="modal fade" id="staffFormModal"  tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title font-weight-bold text-primary h3" id="exampleModalLabel">Add New staff Details</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="post" action="staffDetails" id="staffForm">
+
+          {% csrf_token %}
+
+          <div class="form-group">
+            <label for="staff_name" class="font-weight-bold">staff Name</label>
+            <input type="text" class="form-control" id="staff_name" name="staff_name">
+          </div>
+
+          <div class="form-group">
+            <label for="staff_address" class="font-weight-bold">staff Address</label>
+            <input type="text" class="form-control" id="staff_address" name="staff_address">
+          </div>
+
+          <div class="form-group">
+            <label for="staff_phone" class="font-weight-bold">staff Phone No.</label>
+            <input type="text" class="form-control" id="staff_phone" name="staff_phone">
+          </div>
+
+          <div class="form-group">
+            <label for="staff_description" class="font-weight-bold">staff Description</label>
+            <input type="text" class="form-control" id="staff_description" name="staff_description">
+          </div>
+
+
+      </div>
+
+      <input type="hidden" value="{{staff.number}}" name="current_page">
+      <input type="hidden" value="{{college_id}}" id="collegeId" name="college_id">
+      
+
+      <div class="modal-footer">
+        <button type="reset" class="btn btn-danger col-md-3">Reset</button>
+        <button type="submit" class="btn btn-success col-md-3" id="submitButton">Add</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<table class="container-fluid table table-striped mt-3">
+  <tr>
+    <th>Sr no.</th>
+    <th>staff Name</th>
+    <th>staff Address</th>
+    <th>staff Description</th>
+    <th>staff Phone</th>
+    <th>Action</th>
+  </tr>
+
+  {% if staff %}
+
+  {% for staff in staff %}
+
+  <tr>
+    <td>{{forloop.counter}}</td>
+    <td>{{staff.staff_name}}</td>
+    <td>{{staff.staff_address}}</td>
+    <td>{{staff.staff_description}}</td>
+    <td>{{staff.staff_phone}}</td>
+    <td>
+      <button type="button" class="btn btn-primary btn-small">staff</button>
+      <button type="button" class="btn btn-success btn-small" value="{{staff.id}}" data-toggle="modal" data-target="#staffFormModal" onclick="fetchstaff(this.value)">Edit</button>
+      <button type="button" value="{{staff.id}}" onclick="deletestaff(this.value)"
+        class="btn btn-danger btn-small" data-toggle="modal" data-target="#deleteModal">Delete</button>
+    </td>
+  </tr>
+
+  {% endfor %}
+  {% else %}
+  <tr>
+    <td>
+      <h2 class="text-danger mt-5">Sorry ! No data available</h2>
+    </td>
+  </tr>
+  {% endif %}
+
+</table>
+
+
+<!-- pagination-->
+
+<nav aria-label="Page navigation">
+  <ul class="pagination">
+    {% if staff.number == total_pages and staff.has_previous and staff.number > 2 %}
+    <li class="page-item">
+      <a class="page-link active" href="?page={{staff.previous_page_number}}&staff={{college_id}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+    <li class="page-item"><a class="page-link"
+        href="?page={{staff.number|add:"-2"}}& staff = {{college_id}}">{{staff.number|add:"-2"}}</a></li>
+    <li class="page-item"><a class="page-link"
+        href="?page={{staff.number|add:"-1"}}&staff={{college_id}}">{{staff.number|add:"-1"}}</a></li>
+
+
+    {% elif staff.has_previous %}
+    <li class="page-item">
+      <a class="page-link active" href="?page={{staff.previous_page_number}}&staff={{college_id}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+
+    <li class="page-item"><a class="page-link"
+        href="?page={{staff.number|add:"-1"}}&staff={{college_id}}">{{staff.number|add:"-1"}}</a></li>
+    {% else %}
+
+    <li class="page-item">
+      <a class="page-link" href="?page=&staff={{college_id}}" aria-label="Previous">
+        <span aria-hidden="true">&laquo;</span>
+      </a>
+    </li>
+
+    {% endif %}
+
+    {% if staff.number >= 1 %}
+
+    <li class="page-item active"><a class="page-link" href="?page={{staff.number}}&staff={{college_id}}">{{staff.number}}</a></li>
+
+    {% endif %}
+
+
+    {% if staff.number == 1 and staff.has_next and total_pages >= 3 %}
+    <li class="page-item"><a class="page-link" href="?page={{staff.number|add:"1"}}&staff={{college_id}}">{{staff.number|add:"1"}}</a>
+    </li>
+    <li class="page-item"><a class="page-link" href="?page={{staff.number|add:"2"}}&staff={{college_id}}">{{staff.number|add:"2"}}</a>
+    </li>
+
+    <li class="page-item">
+      <a class="page-link" href="?page={{staff.next_page_number}}&staff={{college_id}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+
+    {% elif staff.has_next %}
+
+    <li class="page-item"><a class="page-link" href="?page={{staff.number|add:"1"}}&staff={{college_id}}">{{staff.number|add:"1"}}</a>
+    </li>
+
+    <li class="page-item">
+      <a class="page-link" href="?page={{staff.next_page_number}}&staff={{college_id}}" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+
+    {% else %}
+
+    <li class="page-item">
+      <a class="page-link" href="" aria-label="Next">
+        <span aria-hidden="true">&raquo;</span>
+      </a>
+    </li>
+
+    {% endif %}
+
+  </ul>
+</nav>
+
+<!--delete Modal-->
+
+<!-- Modal -->
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Delete</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form action="delete" method="post">
+          {% csrf_token %}
+          <div class="text-danger font-weight-bold">Are you sure ?</div>
+         
+          <input type="hidden" value="" id="deletestaffId" name="deleteid">
+          <input type="hidden" value="{{staff.number}}" name="currentPage">
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="submit" class="btn btn-danger text-white">Delete</a>
+      </div>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!--<button type="button" name="" id="special" class="btn btn-primary btn-lg btn-block">Test Button</button>
+
+<p id="goa">Hello</p>-->
+
+
+{% endblock content %}

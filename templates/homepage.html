@@ -96,7 +96,7 @@
     <td>{{college.college_description}}</td>
     <td>{{college.college_phone}}</td>
     <td>
-      <button type="button" class="btn btn-primary btn-small">staff</button>
+      <a href="college/staff/staffinfo?staff={{college.id}}" class="btn btn-primary btn-small">staff</a>
       <button type="button" class="btn btn-success btn-small" value="{{college.id}}" data-toggle="modal" data-target="#collegeFormModal" onclick="fetchCollege(this.value)">Edit</button>
       <button type="button" value="{{college.id}}" onclick="deleteCollege(this.value)"
         class="btn btn-danger btn-small" data-toggle="modal" data-target="#deleteModal">Delete</button>

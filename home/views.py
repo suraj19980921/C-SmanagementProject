@@ -159,3 +159,4 @@ def search(request):
 
     return JsonResponse({"colleges":colleges})
 
+

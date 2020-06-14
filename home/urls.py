@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.urls import path,include
-from django.conf.urls import url
 from home import views
 
 
@@ -16,6 +15,6 @@ urlpatterns = [
     path('delete', views.delete, name="delete"),
     path('fetch',views.fetch, name="fetch"),
     path('update_details',views.update, name="update"),
-     path('search',views.search, name="search")
+    path('search',views.search, name="search")
     
 ]
