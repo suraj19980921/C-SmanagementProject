@@ -65,7 +65,9 @@ def staffDetails(request):
     
 def delete(request):    
   
-    all_staffs =  Paginator(staff.objects.filter(user_id = request.user),3)
+    college_id = request.POST['college_id']
+
+    all_staffs =  Paginator(Staff.objects.filter(college_id = college_id),3)
 
 
     current_page = request.POST['currentPage']
@@ -76,14 +78,14 @@ def delete(request):
 
     id = request.POST['deleteid']
     
-    staff.objects.get(id = id).delete()
+    Staff.objects.get(id = id).delete()
 
-    return redirect('/home?page='+str(current_page))
+    return redirect('/college/staff/staffinfo?page='+str(current_page)+'&staff='+str(college_id))
 
 
 def fetch(request):
 
-    staff = staff.objects.filter(id = request.GET['id'])
+    staff = Staff.objects.filter(id = request.GET['id'])
 
     staffs = serialize('json', staff)
 
@@ -93,7 +95,7 @@ def update(request):
  
 
     if request.method == "POST":
-        
+        college_id = request.POST['college_id']
         staff_id =  request.POST["staffId"]
         staff_name = request.POST["staff_name"]
         staff_address = request.POST["staff_address"]
@@ -102,13 +104,13 @@ def update(request):
         
         current_page = request.POST['current_page']
  
-    staff.objects.filter(pk=staff_id).update(staff_name=staff_name,
+    Staff.objects.filter(pk=staff_id).update(staff_name=staff_name,
                                                       staff_address=staff_address,
                                                       staff_phone = staff_phone,
                                                       staff_description= staff_description)
 
 
-    return redirect('/home?page='+str(current_page))
+    return redirect('/college/staff/staffinfo?page='+str(current_page)+'&staff='+str(college_id))
    
     
 def search(request):

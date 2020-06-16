@@ -60,10 +60,11 @@
 
       <input type="hidden" value="{{staff.number}}" name="current_page">
       <input type="hidden" value="{{college_id}}" id="collegeId" name="college_id">
+      <input type="hidden" value="{{staff.id}}" id="staffId" name="staffId">
       
 
       <div class="modal-footer">
-        <button type="reset" class="btn btn-danger col-md-3">Reset</button>
+        <button type="reset" class="btn btn-danger col-md-3" id="resetButton">Reset</button>
         <button type="submit" class="btn btn-success col-md-3" id="submitButton">Add</button>
 
         </form>
@@ -96,9 +97,9 @@
     <td>{{staff.staff_description}}</td>
     <td>{{staff.staff_phone}}</td>
     <td>
-      <button type="button" class="btn btn-primary btn-small">staff</button>
+      <button type="button" class="btn btn-primary btn-small" value="{{staff.id}}" data-toggle="modal" data-target="#staffFormModal" onclick="fetchstaff(this.value)" id="viewStaff">View</button>
       <button type="button" class="btn btn-success btn-small" value="{{staff.id}}" data-toggle="modal" data-target="#staffFormModal" onclick="fetchstaff(this.value)">Edit</button>
-      <button type="button" value="{{staff.id}}" onclick="deletestaff(this.value)"
+      <button type="button" value="{{staff.id}}" onclick="deleteStaff(this.value)"
         class="btn btn-danger btn-small" data-toggle="modal" data-target="#deleteModal">Delete</button>
     </td>
   </tr>
@@ -213,6 +214,7 @@
          
           <input type="hidden" value="" id="deletestaffId" name="deleteid">
           <input type="hidden" value="{{staff.number}}" name="currentPage">
+          <input type="hidden" value="{{college_id}}" id="collegeId" name="college_id">
 
       </div>
       <div class="modal-footer">
