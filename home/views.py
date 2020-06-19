@@ -29,7 +29,7 @@ def login(request):
             message = "Invalid Username or password"
             return render(request,'login.html',{"messages":message})
         
-        
+    return render (request,'login.html')
          
 
 def logout(request):
