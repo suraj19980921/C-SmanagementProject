@@ -11,11 +11,13 @@ from django.contrib.postgres.search import SearchVector
 # Create your views here.
 
 def login(request):
-    
+   
     if request.method == "POST":
 
         username = request.POST["username"]
         password = request.POST["password"]
+
+       
 
         user = auth.authenticate(username=username,password=password)
         
@@ -24,9 +26,10 @@ def login(request):
             return redirect('home')
             
         else:
-            print('unable to log in')
+            message = "Invalid Username or password"
+            return render(request,'login.html',{"messages":message})
         
-    return render(request,'login.html')    
+        
          
 
 def logout(request):
@@ -34,6 +37,10 @@ def logout(request):
     auth.logout(request)
     return redirect('/')
 
+
+
+
+    
 
 def register(request):
 

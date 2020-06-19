@@ -1,0 +1,40 @@
+@media only screen and (min-width: 600px) {
+    #adjustLogIn{
+
+        margin-left:400px;
+    }
+
+    #loginButton{
+
+        margin-left:10%;
+    }
+
+    #newAccount{
+
+        margin-left:13%;
+        
+    }
+  }
+
+
+  @media only screen and (max-width: 600px) {
+
+    #newAccount{
+
+        margin-left:13%;
+        
+    }
+
+  }
+
+
+  @media only screen and (min-width: 600px) {
+
+     #registerContainer{
+
+        margin-left:400px;
+     }
+
+
+
+  }

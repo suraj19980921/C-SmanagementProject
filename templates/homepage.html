@@ -9,9 +9,9 @@
   {{request.user.first_name}} {{request.user.last_name}} </div>
 
 <div class="row mt-3 ml-2">
-  <input type="text" class="form-control col-md-6" id="search" name="searchValue">
-  <button type="button" class="btn btn-success col-md-1 ml-1">Search</button>
-  <button type="button" class="btn btn-primary col-md-2 ml-5" id="addCollegeDetails" data-toggle="modal" data-target="#collegeFormModal">+ Add
+  <input type="text" class="form-control col-md-6 col-sm-5" id="search" name="searchValue">
+  <button type="button" class="btn btn-success btn-lg btn-md btn-sm ml-1 mt-1">Search</button>
+  <button type="button" class="btn btn-primary btn-lg btn-md btn-sm  ml-1 mt-1" id="addCollegeDetails" data-toggle="modal" data-target="#collegeFormModal">+ Add
     New College Details</button>
 </div>
 
@@ -96,10 +96,10 @@
     <td>{{college.college_description}}</td>
     <td>{{college.college_phone}}</td>
     <td>
-      <a href="college/staff/staffinfo?staff={{college.id}}" class="btn btn-primary btn-small">staff</a>
-      <button type="button" class="btn btn-success btn-small" value="{{college.id}}" data-toggle="modal" data-target="#collegeFormModal" onclick="fetchCollege(this.value)">Edit</button>
+      <a href="college/staff/staffinfo?staff={{college.id}}" class="btn btn-primary btn-md mt-1">staff</a>
+      <button type="button" class="btn btn-success btn-md mt-1" value="{{college.id}}" data-toggle="modal" data-target="#collegeFormModal" onclick="fetchCollege(this.value)">Edit</button>
       <button type="button" value="{{college.id}}" onclick="deleteCollege(this.value)"
-        class="btn btn-danger btn-small" data-toggle="modal" data-target="#deleteModal">Delete</button>
+        class="btn btn-danger btn-md mt-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
     </td>
   </tr>
 

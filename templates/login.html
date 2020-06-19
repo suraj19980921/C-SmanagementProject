@@ -10,13 +10,21 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
         integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
 
-   <link rel="stylesheet" href={% static '/bootstrap/css/bootstrap.min.css' %}>
+   <link rel="stylesheet" href="{% static '/bootstrap/css/bootstrap.min.css' %}">
+   <link rel="stylesheet" href="{% static '/main.css' %}">
+
+   <script src="{% static '/alertifyjs/alertify.min.js' %}"></script>
+   <link rel="stylesheet" href="{% static '/alertifyjs/css/alertify.min.css' %}">
+   <link rel="stylesheet" href=" {% static '/alertifyjs/css/themes/default.min.css' %}">
 </head>
 
 <body>
 
-    <div style="margin-left:400px;">
+    <div class="container" id="adjustLogIn">
+      
+      <div calss="row">
 
+       <div class="col-md-12">
         <div class="h2 mt-5">LOG IN </div>
 
             <form action="login" method="post">
@@ -25,28 +33,38 @@
                 
                 <div class="form-group">
                     <label for="username">Username</label>
-                    <input type="text" class="form-control col-md-6" id="username" name="username">
+                    <input type="text" class="form-control col-md-5" id="username" name="username">
                 </div>
 
                 <div class="form-group">
                     <label for="password">Password</label>
-                    <input type="password" class="form-control col-md-6" id="password" name="password">
+                    <input type="password" class="form-control col-md-5" id="password" name="password">
                 </div>
 
-                  <div style="margin-left:15%;">
+                  <div id="loginButton">
                    
                     <button type="submit" class="btn btn-success col-md-3">LOG IN</button>
                  
                  </div>
                
             </form>
-             <a href="register" class="text-primary mt-5 font-weight-bold" style="margin-left:160px; text-decoration:none;" >Create new Account</a><br>
-             <a href="forgot_password" class="text-danger mt-5 font-weight-bold" style="margin-left:160px; text-decoration:none;">Forgot Password</a>
-        </div>
-         
-     </div>
+            <a href="register" class="text-primary  font-weight-bold" id="newAccount" style="text-decoration:none;" >Create new Account</a><br>
 
-  <script scr={% static '/bootstrap/js/bootstrap.min.js' %}></script>
+        </div>
+       </div>  
+    </div>
+    </div>
+    
+    {% if messages %}
+    
+     <script> alertify.error('<b>{{messages}}</b>'); </script>
+    
+    {% endif %}
+            
+
+    <!-- <script src={% static '/bootstrap/js/bootstrap.min.js' %}></script>-->
+
+  
 
     <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
         integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"

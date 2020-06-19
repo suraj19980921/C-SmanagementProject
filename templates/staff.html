@@ -9,9 +9,9 @@
   {{request.user.first_name}} {{request.user.last_name}} </div>
 
 <div class="row mt-3 ml-2">
-  <input type="text" class="form-control col-md-6" id="search" name="searchValue">
-  <button type="button" class="btn btn-success col-md-1 ml-1">Search</button>
-  <button type="button" class="btn btn-primary col-md-2 ml-5" id="addstaffDetails" data-toggle="modal" data-target="#staffFormModal">+ Add
+  <input type="text" class="form-control col-md-6 col-sm-6 mt-1" id="search" name="searchValue">
+  <button type="button" class="btn btn-success col-md-1 col-sm-1 ml-1 mt-1">Search</button>
+  <button type="button" class="btn btn-primary btn-md btn-sm ml-1 mt-1" id="addstaffDetails" data-toggle="modal" data-target="#staffFormModal">+ Add
     New staff Details</button>
 </div>
 
@@ -97,10 +97,10 @@
     <td>{{staff.staff_description}}</td>
     <td>{{staff.staff_phone}}</td>
     <td>
-      <button type="button" class="btn btn-primary btn-small" value="{{staff.id}}" data-toggle="modal" data-target="#staffFormModal" onclick="fetchstaff(this.value)" id="viewStaff">View</button>
-      <button type="button" class="btn btn-success btn-small" value="{{staff.id}}" data-toggle="modal" data-target="#staffFormModal" onclick="fetchstaff(this.value)">Edit</button>
+      <button type="button" class="btn btn-primary btn-md mt-1" value="{{staff.id}}" data-toggle="modal" data-target="#staffFormModal" onclick="fetchstaff(this.value)" id="viewStaff">View</button>
+      <button type="button" class="btn btn-success btn-md mt-1" value="{{staff.id}}" data-toggle="modal" data-target="#staffFormModal" onclick="fetchstaff(this.value)">Edit</button>
       <button type="button" value="{{staff.id}}" onclick="deleteStaff(this.value)"
-        class="btn btn-danger btn-small" data-toggle="modal" data-target="#deleteModal">Delete</button>
+        class="btn btn-danger btn-md mt-1" data-toggle="modal" data-target="#deleteModal">Delete</button>
     </td>
   </tr>
 
